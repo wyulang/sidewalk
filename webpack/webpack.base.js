@@ -1,4 +1,5 @@
 let HtmlWebpackPlugin = require('html-webpack-plugin');
+// html-webpack-tags-plugin
 let config = require('./webpack.config.js');
 const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
@@ -36,6 +37,27 @@ let webpackBase = {
           options: { plugins: [require("autoprefixer")] }
         }, {
           loader: "less-loader",
+        }, {
+          loader: 'sass-resources-loader',
+          options: {
+            resources: path.join(config.root, 'src/css/base.less'),
+          }
+        }
+      ]
+    },
+    {
+      test: /\.scss$/,
+      use: [
+        config.vueLoader,
+        {
+          loader: "style-loader" // creates style nodes from JS strings
+        }, {
+          loader: "css-loader"
+        }, {
+          loader: "postcss-loader",
+          options: { plugins: [require("autoprefixer")] }
+        }, {
+          loader: "sass-loader",
         }, {
           loader: 'sass-resources-loader',
           options: {

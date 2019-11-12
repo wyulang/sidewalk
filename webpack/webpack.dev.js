@@ -11,7 +11,7 @@ const path = require('path');
 let conlg = [];
 
 for (let item in config.entry) {
-  conlg.push(chalk.cyan.bold('Your application is running here: ') + chalk.greenBright.bold(`http://${config.devServer}:${config.port}/${item}/`));
+  conlg.push(chalk.blueBright.bold('Your application is running here: ') + chalk.greenBright.bold(`http://${config.devServer}:${config.port}/${item}/`));
 }
 
 let webpackDevConfig = {
