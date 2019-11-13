@@ -1,11 +1,35 @@
 import config from 'lib/config';
+import Loading from 'vue-loading-new';
 export default {
   data() {
     return {
-      baseSize:config.getEnvName()
+      baseSize: config.getEnvName(),
+      loadingInstance: null,
     }
   },
   methods: {
+    loading(obj = {}) {
+      if (this.loadingInstance) {
+        this.loadingInstance.close();
+      }
+      let options = {
+        lock: true,
+        target: null,
+        text: '',
+        type: 4,
+        background: 'rgba(255, 255, 255, 0.6)',
+        customClass: ''
+      }
+      Object.assign(options, obj);
+      this.loadingInstance = Loading(options);
+    },
+    loadclose() {
+      this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+        if (this.loadingInstance) {
+          this.loadingInstance.close();
+        }
+      });
+    },
     session(key, value, type) {
       if (type) {
         sessionStorage.removeItem(key);
@@ -29,29 +53,29 @@ export default {
           return (val && JSON.parse(val)) || "";
         }
       }
-    }
-  },
-  toHref(href, target, obj) {
-    let el = document.createElement("a");
-    document.body.appendChild(el);
-    el.href = href;
-    if (obj) {
-      let parm = href.includes('?') ? '' : '?';
-      for (let item in obj) {
-        parm += `${item}=${obj[item]}&`;
+    },
+    href(href, target, obj) {
+      let el = document.createElement("a");
+      document.body.appendChild(el);
+      el.href = href;
+      if (obj) {
+        let parm = href.includes('?') ? '' : '?';
+        for (let item in obj) {
+          parm += `${item}=${obj[item]}&`;
+        }
+        parm = parm.substring(0, parm.length - 1);
+        el.href += parm;
       }
-      parm = parm.substring(0, parm.length - 1);
-      el.href += parm;
+      if (!target) {
+        el.target = '_blank';
+      }
+      el.click();
+      document.body.removeChild(el);
+    },
+    getUrlParame(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+      var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
+      if (r != null) return unescape(r[2]); return null;
     }
-    if (!target) {
-      el.target = '_blank';
-    }
-    el.click();
-    document.body.removeChild(el);
-  },
-  getUrlParame(name) {
-    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);//search,查询？后面的参数，并匹配正则
-    if (r != null) return unescape(r[2]); return null;
   }
 }

@@ -14,6 +14,7 @@ export default {
 </script>
 
 <style lang='less'>
-@import "~@css/pc.less";
+@import "~@css/app.less";
 @import "~mint-ui/lib/style.min.css";
+@import "~vue-loading-new/dist/vueLoadingNew.css";
 </style>
