@@ -40,10 +40,11 @@ class db {
   }
 
   query(sql) {
+    // console.log('sql', sql)
     return new Promise((success, error) => {
       this.excel(sql, null, (res, fields) => {
         if (res.code == 2000) {
-          success(res.data)
+          success(res)
         } else {
           error(res)
         }

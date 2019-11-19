@@ -8,7 +8,7 @@ export default {
     }
   },
   methods: {
-    loading(obj = {}) {
+    spinner(obj = {}) {
       let options = {
         lock: true,
         target: null,
