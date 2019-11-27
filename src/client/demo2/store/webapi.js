@@ -19,7 +19,7 @@ class webapi extends baseApi {
   }
 
   envUrl = {
-    me: 'http://192.168.100.23:6001/',
+    me: 'http://api.zytest.86edu.net',
     inte: 'http://api.zytest.86edu.net',
     prod: 'https://api.zy.86edu.net',
   };
@@ -47,7 +47,11 @@ class webapi extends baseApi {
   }
 
   contentType(type) {
-    return "application/json"
+    if (type == 'json') {
+      return "application/json"
+    } else {
+      return "application/x-www-form-urlencoded; charset=UTF-8"
+    }
   }
 
   setToken() {

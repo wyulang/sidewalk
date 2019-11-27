@@ -1,32 +1,39 @@
 import config from 'lib/config';
-import { Loading } from 'element-ui';
+import Loading from 'vue-loading-new';
 export default {
   data() {
     return {
       baseSize: config.getEnvName(),
       loadingInstance: null,
+      spinner: {
+        show: res => {
+          if (this.loadingInstance) {
+            this.loadingInstance.close();
+          }
+          let options = {
+            lock: true,
+            target: null,
+            text: '',
+            type: 4,
+            background: 'rgba(255, 255, 255, 0.6)',
+            customClass: ''
+          }
+          Object.assign(options, res);
+          this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+            this.loadingInstance = Loading(options);
+          });
+        },
+        close: res => {
+          this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
+            if (this.loadingInstance) {
+              this.loadingInstance.close();
+            }
+          });
+        }
+      }
     }
   },
   methods: {
-    spinner(obj = {}) {
-      let options = {
-        lock: true,
-        target: null,
-        text: '',
-        spinner: 'spinner',
-        background: 'rgba(255, 255, 255, 0.6)',
-        customClass: 'loading'
-      }
-      Object.assign(options, obj);
-      this.loadingInstance = Loading.service(options);
-    },
-    loadclose() {
-      this.$nextTick(() => { // 以服务的方式调用的 Loading 需要异步关闭
-        if (this.loadingInstance) {
-          this.loadingInstance.close();
-        }
-      });
-    },
     session(key, value, type) {
       if (type) {
         sessionStorage.removeItem(key);
