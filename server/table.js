@@ -13,7 +13,17 @@ let user = `create table if not exists user(
   sex VARCHAR(2) COMMENT '性别',
   PRIMARY KEY ( id )
  );`;
+ let net = `create table if not exists net(
+  id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(120) COMMENT '网站标题',
+  type VARCHAR(10) COMMENT '网站类型',
+  url VARCHAR(120) COMMENT '用户名',
+  createTime VARCHAR(20) COMMENT '创建时间',
+  description VARCHAR(220) COMMENT '网站简介',
+  PRIMARY KEY ( id )
+ );`;
 
 module.exports = {
-  user
+  user,
+  net
 }

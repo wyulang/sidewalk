@@ -1,7 +1,5 @@
 <template>
-  <div class='w-all h-all flex fs-38 bgcolor ai-c fd-c jc-c'>
-
-  </div>
+ <div></div>
 </template>
 
 <script>
