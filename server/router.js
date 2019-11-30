@@ -1,14 +1,7 @@
-const express = require('express');
-const route = express.Router();
-const db = require('./db.js');
-class router {
-  get(path,sql) {
-    // let result = db(path, data);
-    route.get(path,(req,res)=>{
-      console.log('tag', req.body);
-      let parme = req.body;
-    })
-  }
-}
-
-module.exports = router;
+const cors = require('cors');
+const bodyParser = require('body-parser')
+module.exports = (app) => {
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(bodyParser.json());
+  app.use('/api', cors(), require('./api/index.js'));
+};

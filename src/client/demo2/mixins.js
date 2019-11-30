@@ -1,5 +1,5 @@
 import config from 'lib/config';
-import { Loading } from 'element-ui';
+import Loading from 'vue-loading-new';
 export default {
   data() {
     return {

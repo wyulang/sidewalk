@@ -2,7 +2,7 @@
   <div class='w-all h-all flex fs-16 ai-c fd-c jc-c'>
     <div class="mb10">请求次数：<el-input v-model="count" class="w-150" placeholder="请输入内容"></el-input>
     </div>
-    <el-button @click="setXml" type="primary" icon="el-icon-search">发送</el-button>
+    <!-- <el-button @click="setXml" type="primary" icon="el-icon-search">发送</el-button> -->
     <span>成功：{{message}}</span>
   </div>
 </template>

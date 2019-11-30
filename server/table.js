@@ -1,14 +1,29 @@
 let user = `create table if not exists user(
   id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL,
-  country VARCHAR(100) NOT NULL,
-  classify VARCHAR(100) NOT NULL,
-  time1 VARCHAR(40) NOT NULL,
-  img VARCHAR(40) NOT NULL,
-  star VARCHAR(40) NOT NULL,
-  timelong VARCHAR(40) NOT NULL,
-  type VARCHAR(40) NOT NULL,
-  actors VARCHAR(100) NOT NULL,
-  detail VARCHAR(1000) NOT NULL,
+  name VARCHAR(20) COMMENT '用户名',
+  city VARCHAR(15) COMMENT '城市ID',
+  address VARCHAR(100) COMMENT '地址',
+  idCard VARCHAR(18) COMMENT '身份证',
+  hearder VARCHAR(100) COMMENT '头像',
+  createTime VARCHAR(20) COMMENT '创建时间',
+  phone VARCHAR(12) COMMENT '手机号',
+  password VARCHAR(50) COMMENT '密码',
+  email VARCHAR(50) COMMENT '邮箱',
+  age VARCHAR(10) COMMENT '年纪',
+  sex VARCHAR(2) COMMENT '性别',
   PRIMARY KEY ( id )
  );`;
+ let net = `create table if not exists net(
+  id INT NOT NULL AUTO_INCREMENT,
+  title VARCHAR(120) COMMENT '网站标题',
+  type VARCHAR(10) COMMENT '网站类型',
+  url VARCHAR(120) COMMENT '用户名',
+  createTime VARCHAR(20) COMMENT '创建时间',
+  description VARCHAR(220) COMMENT '网站简介',
+  PRIMARY KEY ( id )
+ );`;
+
+module.exports = {
+  user,
+  net
+}
