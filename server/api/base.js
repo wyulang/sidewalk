@@ -10,4 +10,18 @@ router.post('/table', (req, res) => {
   })
 })
 
+router.post('/database', (req, res) => {
+  let param=req.body;
+  db.query(`SELECT * FROM information_schema.SCHEMATA where SCHEMA_NAME=${req.body.database}`).then(v=>{
+    if(v.data.length){
+      db.query(`CREATE DATABASE ${req.body.database}`).then(val=>{
+        res.json({code:2000,message:'数据库创建成功'})
+      })
+    }else{
+      res.json({code:2000,message:'数据库已存在'})
+    }
+  });
+})
+
+
 module.exports = router;

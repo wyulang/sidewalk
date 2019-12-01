@@ -7,7 +7,7 @@ const routers = [
     path: '/manage',
     name: "manage",
     level:1,
-    component: () => import(/* webpackChunkName: "exam" */ './pages/index.vue'),
+    component: () => import(/* webpackChunkName: "exam" */ './pages/manage/index.vue'),
     meta: {
       index: 0,
       title: '首页',

@@ -3,7 +3,7 @@
     <section class="w-all h-all flex">
       <section class="w-220 bc-bs1 hi-100">
         <div class="h-45 bc-bs11 flex fc-fff ai-c jc-c">
-          <span class="icon fs-28 mr10 icongexingtouxiang"></span><span class="fs-14">平安淡然</span>
+          <span class="icon fs-30 mr10 fc-bs6 icongexingtouxiang"></span><span class="fs-14">平安淡然</span>
         </div>
         <div class="mt5">
           <el-menu @select="menuSelect" class="br-0 menu-config">
@@ -34,7 +34,9 @@
 
           </div>
         </div>
-        <router-view></router-view>
+        <div class="pt10 pl10">
+          <router-view></router-view>
+        </div>
       </section>
     </section>
   </div>
@@ -133,6 +135,18 @@ export default {
 }
 .fc-bs5 {
   color: #c4e4ef;
+}
+.fc-bs6 {
+  color: #1b2737;
+}
+.fc-bs6 {
+  color: #1b2737;
+}
+.fc-bs7 {
+  color: #2b3953;
+}
+.fc-bs8 {
+  color: #3d444a;
 }
 .bc-bs1 {
   background-color: #1b2737;
