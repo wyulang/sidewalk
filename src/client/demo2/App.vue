@@ -27,14 +27,14 @@
           </el-menu>
         </div>
       </section>
-      <section class="flex-1">
+      <section class="flex-1 h-all fd-c flex">
         <div class="h-45 bc-bs10 flex ai-c jc-b">
           <span></span>
-          <div>
-
+          <div class="mr10">
+            <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
           </div>
         </div>
-        <div class="pt10 pl10">
+        <div class="pp10 bc-bs flex-1 auto">
           <router-view></router-view>
         </div>
       </section>
@@ -44,12 +44,18 @@
 </template>
 
 <script>
+import Scrollbar from 'smooth-scrollbar';
 import { menu } from "./router.js";
 export default {
   data() {
     return {
       menunave: []
     }
+  },
+  mounted() {
+    // this.$nextTick(res=>{
+    //   Scrollbar.init(this.$refs.scrollbar,{damping:0.1});
+    // })
   },
   methods: {
     menuSelect(value) {
@@ -77,6 +83,7 @@ export default {
     background-color: #1b2737;
     border-bottom: 1px solid #000;
     border-top: 1px solid #333f4a;
+    line-height: 48px !important;
     color: #c4e4ef;
     i {
       color: #c4e4ef;
@@ -105,7 +112,16 @@ export default {
     }
     .is-active {
       position: relative;
-      background-color: #1eadf3;
+      background-color: #314f75;
+      &:before {
+        content: "";
+        height: 100%;
+        width: 4px;
+        position: absolute;
+        background-color: #1976d2;
+        top: 0;
+        left: 0;
+      }
     }
     &.is-active {
       color: #1976d2;
@@ -182,65 +198,45 @@ export default {
   background-color: #2487e8;
 }
 
-// .dd{
-//   .el-submenu__title {
-//     background-color: #1b2737;
-//     color: #c4e4ef;
-//     i {
-//       color: #c4e4ef;
-//     }
-//   }
-//   .el-menu-item-group__title {
-//     padding: 0;
-//   }
-//   .menu-config-item {
-//     i {
-//       color: #c4e4ef;
-//     }
-//     background-color: #2b3953;
-//     color: #c4e4ef;
-//     padding-left: 43px !important;
-//     &.is-active {
-//       color: #fff !important;
-//       position: relative;
-//       background-color: #1eadf3;
-//       i {
-//         color: #fff;
-//       }
-//       &:before {
-//         content: "";
-//         position: absolute;
-//         left: 0;
-//         top: 0;
-//         width: 3px;
-//         background-color: #587ed1;
-//         height: 100%;
-//       }
-//     }
-//   }
-//   .menu-config-title {
-//     i {
-//       color: #c4e4ef;
-//     }
-//     background-color: #1b2737;
-//     color: #c4e4ef;
-//     &.is-active {
-//       color: #fff !important;
-//       position: relative;
-//       background-color: #1eadf3;
-//       i {
-//         color: #fff;
-//       }
-//       &:before {
-//         content: "";
-//         position: absolute;
-//         left: 0;
-//         top: 0;
-//         width: 3px;
-//         background-color: #1eadf3;
-//         height: 100%;
-//       }
-//     }
-//   }
-// }
+.table {
+  thead tr td {
+    padding: 15px 10px;
+    background-color: #f5f6f6;
+    font-weight: bold;
+    font-size: 13px;
+    color: #888;
+  }
+  tbody tr td {
+    padding: 15px 10px;
+  }
+  tbody tr {
+    color: #555;
+    &:hover {
+      background-color: #f2f2f2;
+      color: #000;
+      cursor: pointer;
+    }
+  }
+}
+.active {
+  &:hover {
+    color: #1eadf3;
+  }
+}
+.module-dialog {
+  .el-dialog__headerbtn {
+    top: 10px;
+    right: 10px;
+    font-size: 22px;
+  }
+  .el-dialog__header {
+    padding: 10px 15px 0;
+  }
+  .el-dialog__body {
+    padding: 15px;
+  }
+  .el-dialog__footer {
+    padding: 0 15px 10px;
+  }
+}
 </style>

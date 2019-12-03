@@ -46,7 +46,7 @@ const routers = [
     path: '/user/manage',
     name: "user-manage",
     pre:2,
-    component: () => import(/* webpackChunkName: "exam" */ './pages/index.vue'),
+    component: () => import(/* webpackChunkName: "exam" */ './pages/manage/common.vue'),
     meta: {
       index: 0,
       title: '后台管理员',

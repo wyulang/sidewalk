@@ -6,12 +6,14 @@ const sql = require('node-transform-mysql');
 // db.query(db.sql.table('nets').select()).then(res=>{
 //   console.log('tag', res);
 // })
-db.query("SELECT * FROM information_schema.SCHEMATA where SCHEMA_NAME='demo1'").then(res=>{
-  console.log('tag', res);
-})
-// db.query(db.selectTable('demo')).then(res=>{
+// db.query("SELECT * FROM information_schema.SCHEMATA where SCHEMA_NAME='demo1'").then(res=>{
 //   console.log('tag', res);
-// });
-// db.route('/api/user/add',(res,err)=>{
-  
+// })
+db.query(table['net']).then(result => {
+  // res.json(result)
+  console.log('table', result.data.warningCount)
+})
+
+// db.query('DROP TABLE user').then(res=>{
+//   console.log('table', res)
 // })

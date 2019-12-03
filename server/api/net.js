@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const db = require('../db.js');
 const superagent= require('superagent');
+//phantom  SPA抓包
 const cheerio = require('cheerio');
 
 router.post('/net', (req, res) => {
