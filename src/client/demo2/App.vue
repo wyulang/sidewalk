@@ -239,4 +239,10 @@ export default {
     padding: 0 15px 10px;
   }
 }
+.dialog-table {
+  tr td {
+    padding: 5px;
+    border: 1px solid #f2f2f2;
+  }
+}
 </style>

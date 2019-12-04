@@ -62,8 +62,8 @@
       </div>
     </div>
 
-    <el-dialog title="提示" class="module-dialog" :visible.sync="isModel" width="650px">
-      <div class="w-all flex">
+    <el-dialog title="提示" class="module-dialog" :visible.sync="isModel" width="700px">
+      <!-- <div class="w-all flex">
         <div class="flex ai-c">
           <span class="w-90">用户名：</span>
           <el-input size="small" v-model="user.name" placeholder="输入用户名"></el-input>
@@ -72,7 +72,39 @@
           <span class="w-90">手机号：</span>
           <el-input size="small" v-model="user.phone" placeholder="输入手机号"></el-input>
         </div>
-      </div>
+      </div> -->
+      <table class="dialog-table ra-4 w-all">
+        <tr>
+          <td class="w-100 nowrap right">用户名：</td>
+          <td>
+            <el-input size="small" v-model="user.name" placeholder="输入用户名"></el-input>
+          </td>
+          <td class="w-100 nowrap right">手机号：</td>
+          <td>
+            <el-input size="small" v-model="user.phone" placeholder="输入手机号"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <td class="w-100 nowrap right">邮箱：</td>
+          <td>
+            <el-input size="small" v-model="user.email" placeholder="输入邮箱"></el-input>
+          </td>
+          <td class="w-100 nowrap right">性别：</td>
+          <td>
+            <radio :data="[{label:'男',value:1},{label:'女',value:2}]" v-model="user.sex"></radio>
+          </td>
+        </tr>
+        <tr>
+          <td class="w-100 nowrap right">密码：</td>
+          <td>
+            <el-input size="small" v-model="user.email" placeholder="输入密码"></el-input>
+          </td>
+          <td class="w-100 nowrap right">类型：</td>
+          <td>
+            <radio :data="[{label:'普通管理员',value:1},{label:'超级管理员',value:2}]" v-model="user.type"></radio>
+          </td>
+        </tr>
+      </table>
       <span slot="footer" class="dialog-footer">
         <el-button size="small" @click="dialogVisible = false">取 消</el-button>
         <el-button size="small" type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -82,14 +114,20 @@
 </template>
 
 <script>
+import radio from '@component/radio.vue';
 export default {
+  components: {
+    radio
+  },
   data() {
     return {
-      isModel:false,
-      user:{
-        name:"",
-        phone:"",
-        email:""
+      isModel: false,
+      user: {
+        name: "",
+        phone: "",
+        email: "",
+        sex: 1,
+        type:1
       },
       serch: {
         name: ''
@@ -97,8 +135,8 @@ export default {
     }
   },
   methods: {
-    btnAdd(){
-      this.isModel=true;
+    btnAdd() {
+      this.isModel = true;
     }
   }
 }

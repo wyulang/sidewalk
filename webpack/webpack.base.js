@@ -11,6 +11,7 @@ let webpackBase = {
       'lib': path.join(config.root, 'lib/'),
       '@css': path.join(config.root, 'src/css'),
       'vue$': 'vue/dist/vue.esm.js',
+      '@component':path.join(config.root, 'src/component')
     },
     modules: ['node_modules', '*'],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.vue']
