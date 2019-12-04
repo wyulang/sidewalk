@@ -9,7 +9,9 @@ let user = `create table if not exists user(
   phone VARCHAR(12) COMMENT '手机号',
   password VARCHAR(50) COMMENT '密码',
   email VARCHAR(50) COMMENT '邮箱',
+  remark VARCHAR(500) COMMENT '邮箱',
   age VARCHAR(10) COMMENT '年纪',
+  ip VARCHAR(15) COMMENT 'IP地址',
   sex VARCHAR(2) COMMENT '性别',
   PRIMARY KEY ( id )
  );`;

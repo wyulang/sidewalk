@@ -75,33 +75,39 @@
       </div> -->
       <table class="dialog-table ra-4 w-all">
         <tr>
-          <td class="w-100 nowrap right">用户名：</td>
+          <td class="w-90 nowrap right">用户名：</td>
           <td>
             <el-input size="small" v-model="user.name" placeholder="输入用户名"></el-input>
           </td>
-          <td class="w-100 nowrap right">手机号：</td>
+          <td class="w-90 nowrap right">手机号：</td>
           <td>
             <el-input size="small" v-model="user.phone" placeholder="输入手机号"></el-input>
           </td>
         </tr>
         <tr>
-          <td class="w-100 nowrap right">邮箱：</td>
+          <td class="w-90 nowrap right">邮箱：</td>
           <td>
             <el-input size="small" v-model="user.email" placeholder="输入邮箱"></el-input>
           </td>
-          <td class="w-100 nowrap right">性别：</td>
+          <td class="w-90 nowrap right">性别：</td>
           <td>
             <radio :data="[{label:'男',value:1},{label:'女',value:2}]" v-model="user.sex"></radio>
           </td>
         </tr>
         <tr>
-          <td class="w-100 nowrap right">密码：</td>
+          <td class="w-90 nowrap right">密码：</td>
           <td>
             <el-input size="small" v-model="user.email" placeholder="输入密码"></el-input>
           </td>
-          <td class="w-100 nowrap right">类型：</td>
+          <td class="w-90 nowrap right">类型：</td>
           <td>
             <radio :data="[{label:'普通管理员',value:1},{label:'超级管理员',value:2}]" v-model="user.type"></radio>
+          </td>
+        </tr>
+        <tr>
+          <td>个人说明：</td>
+          <td colspan="3">
+            <el-input type="textarea" class="w-all" size="small" v-model="user.email" placeholder="输入密码"></el-input>
           </td>
         </tr>
       </table>
@@ -114,7 +120,7 @@
 </template>
 
 <script>
-import radio from '@component/radio.vue';
+import radio from "@component/radio.vue";
 export default {
   components: {
     radio
@@ -127,19 +133,20 @@ export default {
         phone: "",
         email: "",
         sex: 1,
-        type:1
+        type: 1,
+        remark:""
       },
       serch: {
-        name: ''
+        name: ""
       }
-    }
+    };
   },
   methods: {
     btnAdd() {
       this.isModel = true;
     }
   }
-}
+};
 </script>
 
 <style lang='less' scoped>
