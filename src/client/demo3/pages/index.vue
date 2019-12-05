@@ -7,7 +7,6 @@
 
 <script>
 import radio from '@component/radio.vue';
-import city from './city.js';
 export default {
   components: {
     radio
@@ -37,20 +36,7 @@ export default {
     }
   },
   created() {
-    // console.log('tag', city.city)
-    this.list = city.city.filter(v => { return v[0].length == 3 }).map(v => { return { label: v[2], value: v[0] } });
-    this.list.forEach(v=>{
-      v.children=city.city.filter(item=>{return item[1]==v.value}).map(v => { return { label: v[2], value: v[0] } });
-    })
-    this.list.forEach(v=>{
-      v.children.forEach(item=>{
-        let child=city.city.filter(item=>{return item[1]==v.value}).map(v => { return { label: v[2], value: v[0] } });
-        if(child.length){
-          item.children=child;
-        }
-      })
-    })
-    console.log('tag', this.list);
+   
   }
 }
 </script>
