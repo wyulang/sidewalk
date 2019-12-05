@@ -9,10 +9,12 @@ const sql = require('node-transform-mysql');
 // db.query("SELECT * FROM information_schema.SCHEMATA where SCHEMA_NAME='demo1'").then(res=>{
 //   console.log('tag', res);
 // })
-db.query(table['net']).then(result => {
-  // res.json(result)
-  console.log('table', result.data.warningCount)
-})
+// db.query(table['net']).then(result => {
+//   // res.json(result)
+//   console.log('table', result.data.warningCount)
+// })
+
+console.log(db.sql.table('user').data({name:'fwea',email:'faefa'}).where({id:11}).update())
 
 // db.query('DROP TABLE user').then(res=>{
 //   console.log('table', res)
