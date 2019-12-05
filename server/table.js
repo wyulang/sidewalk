@@ -14,6 +14,8 @@ let user = `create table if not exists user(
   type VARCHAR(10) COMMENT '用户类型',
   ip VARCHAR(15) COMMENT 'IP地址',
   sex VARCHAR(2) COMMENT '性别',
+  lgCount INT(8) COMMENT '登录次数',
+  lgTime VARCHAR(20) COMMENT '登录时间',
   PRIMARY KEY ( id )
  );`;
  let net = `create table if not exists net(

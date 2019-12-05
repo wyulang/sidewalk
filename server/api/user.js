@@ -33,4 +33,14 @@ router.post('/update', (req, res) => {
     })
   }
 })
+
+router.post('/delete',(req,res)=>{
+  db.query(db.sql.table('user').where(req.body).delet()).then(result=>{
+    if(result.code==2000){
+      res.json({ message: "用户删除成功", code: "2000" })
+    }else{
+      res.json(result)
+    }
+  })
+})
 module.exports = router;

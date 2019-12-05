@@ -49,7 +49,7 @@
                   <span class="icon fs-14 mr2 iconbianji hand "></span>
                   <span>编辑</span>
                 </div>
-                <div class="flex-line active ai-c hand mr10">
+                <div @click="btnDelete(item)" class="flex-line active ai-c hand mr10">
                   <span class="icon fs-14 mr2 iconshanchu hand "></span>
                   <span>删除</span>
                 </div>
@@ -133,7 +133,8 @@ export default {
         sex: 1,
         type: 1,
         remark: "",
-        city: []
+        city: [],
+        password: ""
       },
       serch: {
         name: ""
@@ -141,9 +142,10 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["updateUser", "getUserList"]),
+    ...mapActions(["updateUser", "getUserList","getUserDelete"]),
     btnAdd(item) {
       if (item) {
+        item.password="";
         this.user = item;
       } else {
         this.user = {
@@ -153,26 +155,32 @@ export default {
           sex: 1,
           type: 1,
           remark: "",
-          city: []
-        }
+          city: [],
+          password: ""
+        };
       }
       this.isModel = true;
     },
     btnSave() {
       if (!this.user.name) {
-        this.$message.error('用户名不为空'); return;
+        this.$message.error("用户名不为空");
+        return;
       }
       if (!this.user.phone) {
-        this.$message.error('手机号不为空'); return;
+        this.$message.error("手机号不为空");
+        return;
       }
       if (!this.user.email) {
-        this.$message.error('邮箱不为空'); return;
+        this.$message.error("邮箱不为空");
+        return;
       }
-      if (!this.user.password) {
-        this.$message.error('密码不为空'); return;
+      if (!this.user.password &&!this.user.id) {
+        this.$message.error("密码不为空");
+        return;
       }
       if (!this.user.city.length) {
-        this.$message.error('城市不为空'); return;
+        this.$message.error("城市不为空");
+        return;
       }
       let sqlData = {
         city: this.user.city.toString(),
@@ -181,12 +189,30 @@ export default {
         email: this.user.email,
         sex: this.user.sex,
         type: this.user.type,
-        remark: this.user.remark,
+        remark: this.user.remark
       };
+      if (this.user.id) {
+        sqlData.id = this.user.id;
+      }
+      if (this.user.password) {
+        sqlData.password = this.user.password;
+      }
+
+
       this.updateUser(sqlData).then(res => {
-        this.isModel = true;
+        this.isModel = false;
         if (res.code == 2000) {
           sqlData = null;
+          this.$message.success(res.message);
+          this.initData();
+        } else {
+          this.$message.error(res.message);
+        }
+      });
+    },
+    btnDelete(item){
+      this.getUserDelete({id:item.id}).then(res=>{
+        if (res.code == 2000) {
           this.$message.success(res.message);
           this.initData();
         } else {
@@ -198,11 +224,13 @@ export default {
       this.getUserList({}).then(res => {
         if (res.code == 2000) {
           this.list = res.data;
-          this.list.forEach(v=>{
-            v.city=v.city.split(',');
-          })
+          this.list.forEach(v => {
+            v.city = v.city.split(",");
+          });
+        } else {
+          this.$message.error(res.message);
         }
-      })
+      });
     }
   },
   created() {

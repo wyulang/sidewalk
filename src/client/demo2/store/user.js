@@ -10,6 +10,9 @@ export default {
     getUserList (action,params) {
       return api.post(`/api/user/list`, params)
     },
+    getUserDelete (action,params) {
+      return api.post(`/api/user/delete`, params)
+    },
   },
   mutations: {
 
