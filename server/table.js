@@ -1,7 +1,7 @@
 let user = `create table if not exists user(
   id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(20) COMMENT '用户名',
-  city VARCHAR(15) COMMENT '城市ID',
+  city VARCHAR(50) COMMENT '城市ID',
   address VARCHAR(100) COMMENT '地址',
   idCard VARCHAR(18) COMMENT '身份证',
   hearder VARCHAR(100) COMMENT '头像',
@@ -11,6 +11,7 @@ let user = `create table if not exists user(
   email VARCHAR(50) COMMENT '邮箱',
   remark VARCHAR(500) COMMENT '邮箱',
   age VARCHAR(10) COMMENT '年纪',
+  type VARCHAR(10) COMMENT '用户类型',
   ip VARCHAR(15) COMMENT 'IP地址',
   sex VARCHAR(2) COMMENT '性别',
   PRIMARY KEY ( id )
