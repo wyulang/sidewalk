@@ -1,26 +1,25 @@
 <template>
   <div class='w-all'>
     <div class="w-all bc-fff pt10 pb10 sha-7 ra-4 pl10 pr10">
-      <span>用户名：</span>
-      <el-input size="small" class="w-200" v-model="serch.name" placeholder="输入用户名"></el-input>
-      <span class="ml20">手机：</span>
-      <el-input size="small" class="w-200" v-model="serch.name" placeholder="输入用户名"></el-input>
-      <span class="ml20">邮箱：</span>
-      <el-input size="small" class="w-200" v-model="serch.name" placeholder="输入用户名"></el-input>
-      <el-button class="ml20" type="primary" size="small">查询</el-button>
+      <el-input size="small" class="w-200" clearable v-model="serch.value" placeholder="输入用户名/手机号/邮箱"></el-input>
+      <el-select size="small" clearable class="ml20" v-model="serch.type" placeholder="请选择用户类型">
+        <el-option v-for="item in typeList" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </el-select>
+      <el-button class="ml20" @click="initData()" type="primary" size="small">查询</el-button>
     </div>
 
     <div class="w-all bc-fff ra-4 pl10 pr10 pb10 sha-7 mt10">
       <div class="pt10 flex pb10">
         <el-button @click="btnAdd()" icon="icon icontianjia" size="small">新增</el-button>
-        <el-button class="ml10" icon="icon iconshanchu" size="small">批量删除</el-button>
+        <el-button class="ml10" @click="btnDelete(selectList)" icon="icon iconshanchu" size="small">批量删除</el-button>
       </div>
-      <div>
+      <div class="sha-3 mt5">
         <table class="table w-all">
           <thead>
-            <tr class="bt-e">
+            <tr>
               <td class="wb-1">
-                <el-checkbox></el-checkbox>
+                <el-checkbox :value="selectList.length==list.length&&selectList.length>0" @change="v=>{v?(selectList=list.map(d=>{return d.id})):(selectList=[])}"></el-checkbox>
               </td>
               <td>用户名</td>
               <td>电话</td>
@@ -35,7 +34,7 @@
           <tbody>
             <tr class="bt-e" v-for="(item, index) in list" :key="index">
               <td>
-                <el-checkbox></el-checkbox>
+                <el-checkbox :value="selectList.includes(item.id)" @change="(v)=>{v?selectList.push(item.id):selectList.splice(selectList.indexOf(item.id),1)}"></el-checkbox>
               </td>
               <td>{{item.name}}</td>
               <td>{{item.phone}}</td>
@@ -49,7 +48,7 @@
                   <span class="icon fs-14 mr2 iconbianji hand "></span>
                   <span>编辑</span>
                 </div>
-                <div @click="btnDelete(item)" class="flex-line active ai-c hand mr10">
+                <div @click="btnDelete([item.id])" class="flex-line active ai-c hand mr10">
                   <span class="icon fs-14 mr2 iconshanchu hand "></span>
                   <span>删除</span>
                 </div>
@@ -57,6 +56,10 @@
             </tr>
           </tbody>
         </table>
+      </div>
+      <div class="flex jc-s mt15 mb5">
+        <el-pagination background @current-change="changPage" :current-page="serch.page" :page-size="serch.size" layout="prev, pager, next" :total="serch.total">
+        </el-pagination>
       </div>
     </div>
 
@@ -85,11 +88,11 @@
         <tr>
           <td class="w-90 nowrap right">密码：</td>
           <td>
-            <el-input size="small" v-model="user.password" placeholder="输入密码"></el-input>
+            <el-input size="small" v-model="user.password" placeholder="请输入密码" show-password></el-input>
           </td>
           <td class="w-90 nowrap right">类型：</td>
           <td>
-            <radio :data="[{label:'普通管理员',value:1},{label:'超级管理员',value:2}]" v-model="user.type"></radio>
+            <radio :data="typeList" v-model="user.type"></radio>
           </td>
         </tr>
         <tr>
@@ -125,6 +128,8 @@ export default {
     return {
       cityList: city,
       list: [],
+      typeList: [{ label: '普通管理员', value: 1 }, { label: '超级管理员', value: 2 }],
+      selectList: [],
       isModel: false,
       user: {
         name: "",
@@ -137,15 +142,19 @@ export default {
         password: ""
       },
       serch: {
-        name: ""
+        value: "",
+        type: "",
+        page: 1,
+        size: 10,
+        total:0
       }
     };
   },
   methods: {
-    ...mapActions(["updateUser", "getUserList","getUserDelete"]),
+    ...mapActions(["updateUser", "getUserList", "getUserDelete"]),
     btnAdd(item) {
       if (item) {
-        item.password="";
+        item.password = "";
         this.user = item;
       } else {
         this.user = {
@@ -174,7 +183,7 @@ export default {
         this.$message.error("邮箱不为空");
         return;
       }
-      if (!this.user.password &&!this.user.id) {
+      if (!this.user.password && !this.user.id) {
         this.$message.error("密码不为空");
         return;
       }
@@ -210,9 +219,14 @@ export default {
         }
       });
     },
-    btnDelete(item){
-      this.getUserDelete({id:item.id}).then(res=>{
+    btnDelete(item) {
+      if (item.length == 0) {
+        this.$message.error("请选择要删除的项")
+        return;
+      }
+      this.getUserDelete({ id: item }).then(res => {
         if (res.code == 2000) {
+          this.selectList = this.selectList.filter(v => { return !item.includes(v) });
           this.$message.success(res.message);
           this.initData();
         } else {
@@ -221,9 +235,10 @@ export default {
       })
     },
     initData() {
-      this.getUserList({}).then(res => {
+      this.getUserList(this.serch).then(res => {
         if (res.code == 2000) {
           this.list = res.data;
+          this.serch.total=res.total;
           this.list.forEach(v => {
             v.city = v.city.split(",");
           });
@@ -231,6 +246,10 @@ export default {
           this.$message.error(res.message);
         }
       });
+    },
+    changPage(page) {
+      this.serch.page = page;
+      this.initData();
     }
   },
   created() {

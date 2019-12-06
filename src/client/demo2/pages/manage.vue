@@ -1,23 +1,80 @@
 <template>
-  <router-view></router-view>
+  <div class='w-all ff h-all'>
+    <section class="w-all h-all flex">
+      <section class="w-220 bc-bs1 hi-100">
+        <div class="h-45 bc-bs11 flex fc-fff ai-c jc-c">
+          <span class="icon fs-30 mr10 fc-bs6 icongexingtouxiang"></span><span class="fs-14">平安淡然</span>
+        </div>
+        <div class="mt5">
+          <el-menu @select="menuSelect" class="br-0 menu-config">
+            <transition v-for="(item, index) in menunave" :key="index">
+              <el-submenu class="menu-config-title" v-if="item.children.length" :index="item.name">
+                <div slot="title">
+                  <i :class="item.meta.icon" class="icon mr12"></i>
+                  <span class="title" slot="title">{{item.meta.title}}</span>
+                </div>
+                <el-menu-item-group>
+                  <el-menu-item class="menu-config-item" v-for="(child, index) in item.children" :key="index" :index="child.name">
+                    <i :class="child.meta.icon" class="icon mr6"></i><span>{{child.meta.title}}</span>
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <el-menu-item v-else class="menu-config-title" :index="item.name">
+                <i :class="item.meta.icon" class="icon mr12"></i>
+                <span slot="title">{{item.meta.title}}</span>
+              </el-menu-item>
+            </transition>
+          </el-menu>
+        </div>
+      </section>
+      <section class="flex-1 h-all fd-c flex">
+        <div class="h-45 bc-bs10 flex ai-c jc-b">
+          <span></span>
+          <div class="mr10">
+            <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
+          </div>
+        </div>
+        <div class="pp10 bc-bs flex-1 auto">
+          <router-view></router-view>
+        </div>
+      </section>
+    </section>
+  </div>
+
 </template>
 
 <script>
 import Scrollbar from 'smooth-scrollbar';
-import { menu } from "./router.js";
+import { menu } from "../router.js";
 export default {
   data() {
     return {
       menunave: []
     }
   },
+  mounted() {
+    // this.$nextTick(res=>{
+    //   Scrollbar.init(this.$refs.scrollbar,{damping:0.1});
+    // })
+  },
+  methods: {
+    menuSelect(value) {
+      this.$router.push({ name: value });
+    }
+  },
+  created() {
+    let nav = JSON.parse(JSON.stringify(menu.find(v=>{return v.name=='manage'}).children));
+    nav.forEach(v => {
+      if (v.level) {
+        v.children = nav.filter(child => { return child.pre == v.level });
+        this.menunave.push(v);
+      }
+    });
+  }
 }
 </script>
 
 <style lang='less'>
-@import "~@css/pc.less";
-@import "~element-ui/lib/theme-chalk/index.css";
-@import "~vue-loading-new/dist/vueLoadingNew.css";
 .menu-config {
   .menu-config-title {
     background-color: #1b2737;

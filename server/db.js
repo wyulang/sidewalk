@@ -1,5 +1,5 @@
 const mysql = require('mysql');//引入mysql模块
-const databaseConfig = { host: 'localhost', user: 'root', port: '3306', password: 'wyulang', database: 'demo' }
+const databaseConfig = { host: 'localhost', user: 'root', port: '3306', password: 'wyulang', database: 'demo', multipleStatements: true }
 const sql = require('node-transform-mysql')
 //引入数据库配置模块中的数据
 class db {
@@ -42,6 +42,7 @@ class db {
   }
 
   query(sql) {
+    // console.log(sql);
     return new Promise((success, error) => {
       this.excel(sql, null, res => {
         if (res.code == 2000) {
