@@ -42,7 +42,7 @@ class db {
   }
 
   query(sql) {
-    // console.log(sql);
+    console.log(sql);
     return new Promise((success, error) => {
       this.excel(sql, null, res => {
         if (res.code == 2000) {

@@ -41,7 +41,7 @@ function Appendzero(obj) {
  * @param  {String}      format Date format string. YYYY-MM-DD
  * @return {String}             Formatted string.
  */
-export const formatDate = function (date, format) {
+const formatDate = (date, format) => {
     if (!date) {
         return date;
     }
@@ -99,7 +99,7 @@ export const formatDate = function (date, format) {
  * @param {Date} date 时间对象.
  * @return {Date} 新的时间对象.
  */
-export const dateAdd = (interval, number, date) => {
+const dateAdd = (interval, number, date) => {
     interval = (interval || '').replace(/\s+/ig, '');
     date = dateNormalize(date);
     switch (interval) {
@@ -139,7 +139,7 @@ export const dateAdd = (interval, number, date) => {
  * @param {String} prefix 剩余
  * @returns {String} 剩余23时58分
  */
-export const formatTimestamp = (seconds, format, prefix) => {
+const formatTimestamp = (seconds, format, prefix) => {
     prefix = prefix || '';
     seconds = parseInt(seconds, 10);
     format = format || 'YYYY年MM月DD日 hh时mm分ss秒';
@@ -161,7 +161,7 @@ export const formatTimestamp = (seconds, format, prefix) => {
 };
 
 //两时间相减得到，时，分，秒
-export const GetDateDiff = (startTime, endTime, diffType) => {
+const GetDateDiff=(startTime, endTime, diffType) => {
     //将xxxx-xx-xx的时间格式，转换为 xxxx/xx/xx的格式 
     // startTime = startTime.replace(/\-/g, "/");
     // endTime = endTime.replace(/\-/g, "/");
@@ -169,6 +169,7 @@ export const GetDateDiff = (startTime, endTime, diffType) => {
     diffType = diffType.toLowerCase();
     var sTime = new Date(startTime); //开始时间
     var eTime = endTime && new Date(endTime) || new Date(); //结束时间
+    
     //作为除数的数字
     var timeType = 1;
     switch (diffType) {
@@ -189,3 +190,7 @@ export const GetDateDiff = (startTime, endTime, diffType) => {
     }
     return parseInt((eTime.getTime() - sTime.getTime()) / parseInt(timeType));
 }
+exports.GetDateDiff = GetDateDiff;
+exports.formatTimestamp = formatTimestamp;
+exports.dateAdd = dateAdd;
+exports.formatDate = formatDate;

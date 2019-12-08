@@ -41,7 +41,7 @@
               <td>{{item.email}}</td>
               <td>{{[,"普通管理员","超级管理员"][parseInt(item.type)]}}</td>
               <td>{{item.lgCount || 0}}次</td>
-              <td>{{item.lgTime}}</td>
+              <td>{{item.lgTime ||'未登录'}}</td>
               <td>{{parseInt(item.createTime) | date}}</td>
               <td class="w-150">
                 <div @click="btnAdd(item)" class="flex-line active ai-c hand mr10">
@@ -58,7 +58,7 @@
         </table>
       </div>
       <div class="flex jc-s mt15 mb5">
-        <el-pagination background @current-change="changPage" :current-page="serch.page" :page-size="serch.size" layout="prev, pager, next" :total="serch.total">
+        <el-pagination background @current-change="changPage" hide-on-single-page="true" :current-page="serch.page" :page-size="serch.size" layout="prev, pager, next" :total="serch.total">
         </el-pagination>
       </div>
     </div>
@@ -239,6 +239,7 @@ export default {
         if (res.code == 2000) {
           this.list = res.data;
           this.serch.total=res.total;
+          this.selectList=[];
           this.list.forEach(v => {
             v.city = v.city.split(",");
           });
@@ -254,6 +255,7 @@ export default {
   },
   created() {
     this.initData();
+
   }
 };
 </script>

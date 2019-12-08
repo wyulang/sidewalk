@@ -140,14 +140,14 @@ export default {
 
 .table {
   thead tr td {
-    padding: 15px 10px;
+    padding: 12px 10px;
     background-color: #f5f6f6;
     font-weight: bold;
     font-size: 13px;
     color: #888;
   }
   tbody tr td {
-    padding: 15px 10px;
+    padding: 11px 10px;
   }
   tbody tr {
     color: #555;
