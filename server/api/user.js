@@ -82,17 +82,22 @@ router.post('/login', (req, res) => {
     res.json({ code: '1003', message: '用户名或密码不为空' });
     return;
   }
-  let sqlData = "SELECT * FROM user WHERE 1=1";
+  let sqlData = "SELECT id,name,phone,email,createTime,type,lgCount,lgTime,hearder,city FROM user WHERE 1=1";
   sqlData += ` and (`;
   sqlData += ` name='${req.body.username}'`;
   sqlData += ` or phone='${req.body.username}'`;
   sqlData += ` or email='${req.body.username}' )`;
-  sqlData += ` and password = '${req.body.password}' `;
+  sqlData += ` and password = '${req.body.password}'`;
   db.query(sqlData).then(result => {
     if (result.code == 2000) {
       if (result.data.length > 0) {
         openssr += `0${currTime}`;
-        res.json({ message: "登录成功", code: "2000", data: result.data[0], token: openssr })
+        let rtData = result.data[0];
+        rtData.lgCount = rtData.lgCount && (rtData.lgCount + 1) || 1;
+        rtData.lgTime = new Date().getTime();
+        db.query(`update user set lgCount='${rtData.lgCount}',lgTime='${rtData.lgTime}' where id=${rtData.id}`).then(value => {
+          res.json({ message: "登录成功", code: "2000", data: rtData, token: openssr });
+        })
       } else {
         openssr += timeOuts || `${parseInt(counts) + 1}${currTime}`;
         res.json({ message: "用户名或密码错误", code: "1004", token: openssr })

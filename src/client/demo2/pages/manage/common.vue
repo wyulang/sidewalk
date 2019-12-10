@@ -70,9 +70,14 @@
           <td>
             <el-input size="small" v-model="user.name" placeholder="输入用户名"></el-input>
           </td>
-          <td class="w-90 nowrap right">手机号：</td>
-          <td>
-            <el-input size="small" v-model="user.phone" placeholder="输入手机号"></el-input>
+
+          <td rowspan="6" align="center" colspan="2">
+            <el-upload class="flex-line" :multiple="true" :data="uploadData" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+              <img v-if="user.header" class="w-170 h-170 avatar" :src="user.header">
+              <div v-else class="w-170 avatar-uploader ra-5 h-170 flex ai-c jc-c">
+                <span class="icon fs-22 iconshangchuantupian_f"></span>
+              </div>
+            </el-upload>
           </td>
         </tr>
         <tr>
@@ -80,19 +85,31 @@
           <td>
             <el-input size="small" v-model="user.email" placeholder="输入邮箱"></el-input>
           </td>
-          <td class="w-90 nowrap right">性别：</td>
-          <td>
-            <radio :data="[{label:'男',value:1},{label:'女',value:2}]" v-model="user.sex"></radio>
-          </td>
+
         </tr>
         <tr>
           <td class="w-90 nowrap right">密码：</td>
           <td>
             <el-input size="small" v-model="user.password" placeholder="请输入密码" show-password></el-input>
           </td>
+
+        </tr>
+        <tr>
           <td class="w-90 nowrap right">类型：</td>
           <td>
             <radio :data="typeList" v-model="user.type"></radio>
+          </td>
+        </tr>
+        <tr>
+          <td class="w-90 nowrap right">手机号：</td>
+          <td>
+            <el-input size="small" v-model="user.phone" placeholder="输入手机号"></el-input>
+          </td>
+        </tr>
+        <tr>
+          <td class="w-90 nowrap right">性别：</td>
+          <td>
+            <radio :data="[{label:'男',value:1},{label:'女',value:2}]" v-model="user.sex"></radio>
           </td>
         </tr>
         <tr>
@@ -120,6 +137,7 @@
 import radio from "@component/radio.vue";
 import city from "lib/city.js";
 import { mapActions } from "vuex";
+import api from '../../store/webapi';
 export default {
   components: {
     radio
@@ -131,6 +149,8 @@ export default {
       typeList: [{ label: '普通管理员', value: 1 }, { label: '超级管理员', value: 2 }],
       selectList: [],
       isModel: false,
+      uploadUrl: api.env('envUrl') + '/api/base/upload',
+      uploadData: {},
       user: {
         name: "",
         phone: "",
@@ -146,7 +166,7 @@ export default {
         type: "",
         page: 1,
         size: 10,
-        total:0
+        total: 0
       }
     };
   },
@@ -192,7 +212,7 @@ export default {
         return;
       }
       let sqlData = {
-        city: this.user.city.toString(),
+        city: this.user.city[this.user.city.length - 1],
         name: this.user.name,
         phone: this.user.phone,
         email: this.user.email,
@@ -238,10 +258,14 @@ export default {
       this.getUserList(this.serch).then(res => {
         if (res.code == 2000) {
           this.list = res.data;
-          this.serch.total=res.total;
-          this.selectList=[];
+          this.serch.total = res.total;
+          this.selectList = [];
           this.list.forEach(v => {
-            v.city = v.city.split(",");
+            let city = [];
+            for (let i = 0; i < (v.city.length / 3); i++) {
+              city.push(v.city.substr(0, (i + 1) * 3));
+            }
+            v.city = city;
           });
         } else {
           this.$message.error(res.message);
@@ -255,10 +279,20 @@ export default {
   },
   created() {
     this.initData();
-
+    this.uploadData = this.session('userinfo');
+    this.uploadData.uploadDir = "header";
   }
 };
 </script>
 
 <style lang='less' scoped>
+.avatar-uploader {
+  border: 1px dashed #d9d9d9;
+  &:hover {
+    border: 1px dashed #1976d2;
+    span {
+      color: #1976d2;
+    }
+  }
+}
 </style>

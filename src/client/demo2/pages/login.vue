@@ -48,6 +48,7 @@ export default {
       }
       this.getUserLogin(this.user).then(res => {
         if (res.code == 2000) {
+          this.session('userinfo',res.data)
           this.$router.push({ name: "manage" });
         } else {
           this.$message.error(res.message);

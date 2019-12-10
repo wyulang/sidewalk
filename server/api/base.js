@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
+const path = require('path');
 const table = require('../table.js');
+const fs = require('fs-extra');
 const db = require('../db.js');
 
 router.post('/table', (req, res) => {
@@ -39,6 +41,40 @@ router.post('/delete-table', (req, res) => {
       res.json({ code: 2001, message: '表不存在' })
     }
   });
+})
+
+router.post('/upload', (req, res) => {
+  if (!fs.existsSync(path.join(__dirname, `../assets/temporary`))) {
+    fs.mkdir(path.join(__dirname, `../assets/temporary`));
+  }
+  if (!fs.existsSync(path.join(__dirname, `../assets/other`))) {
+    fs.mkdir(path.join(__dirname, `../assets/other`));
+  }
+  if (req.body.uploadDir && !fs.existsSync(path.join(__dirname, `../assets/${req.body.uploadDir}/`))) {
+    fs.mkdir(path.join(__dirname, `../assets/${req.body.uploadDir}/`));
+  }
+  // console.log(req);
+  setTimeout(() => {
+    let formidable = require('formidable');
+    let form = new formidable.IncomingForm();
+    form.encoding = 'utf-8' // 编码
+    form.keepExtensions = true // 保留扩展名
+    form.multiples = true;
+    form.uploadDir = path.join(__dirname, `../assets/temporary/`);
+    form.parse(req, (err, fields, files) => {
+      if (err) {
+        console.log(err);
+      }
+      console.log(form);
+      let title = "H-" + new Date().getTime() + files.file.path.substring(files.file.path.lastIndexOf('.'));
+      req.body.uploadDir = req.body.uploadDir || "other";
+      let toPath = path.join(__dirname, `../assets/${req.body.uploadDir}/`) + title;
+      fs.rename(files.file.path, toPath, err => {
+        res.json({ code: "2000", data: { url: +req.body.uploadDir + '/' + title, } })
+      })
+    })
+  }, 200);
+
 })
 
 module.exports = router;

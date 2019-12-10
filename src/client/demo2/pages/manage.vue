@@ -1,5 +1,5 @@
 <template>
-  <div class='w-all ff h-all'>
+  <div class='w-all wi-1100 ff h-all'>
     <section class="w-all h-all flex">
       <section class="w-220 bc-bs1 hi-100">
         <div class="h-45 bc-bs11 flex fc-fff ai-c jc-c">
@@ -32,6 +32,7 @@
           <span></span>
           <div class="mr10">
             <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
+
           </div>
         </div>
         <div class="pp10 bc-bs flex-1 auto">
