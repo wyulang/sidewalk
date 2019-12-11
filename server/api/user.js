@@ -2,10 +2,12 @@ var express = require('express');
 var router = express.Router();
 const db = require('../db.js');
 const { GetDateDiff } = require('../lib/dateformat.js');
+const path = require('path');
+const fs = require('fs-extra');
 
 router.post('/list', (req, res) => {
   let param = req.body;
-  let sqlData = "SELECT SQL_CALC_FOUND_ROWS * FROM user WHERE 1=1";
+  let sqlData = "SELECT SQL_CALC_FOUND_ROWS id,name,phone,email,createTime,type,lgCount,lgTime,header,city FROM user WHERE 1=1";
   if (param.value) {
     sqlData += ` and concat (name,phone,email) like '%${param.value}%' `;
   }
@@ -20,28 +22,60 @@ router.post('/list', (req, res) => {
 })
 
 router.post('/update', (req, res) => {
-  let param = req.body;
-  if (param.id) {
-    let where = { id: param.id };
-    delete param.id
-    db.query(db.sql.table("user").data(param).where(where).update()).then(result => {
-      if (result.code == 2000) {
-        res.json({ message: "用户更新成功", code: "2000" })
-      } else {
-        res.json(result)
-      }
-    })
-  } else {
-    delete param.id;
-    param.createTime = new Date().getTime().toString();
-    db.query(db.sql.table('user').data(param).insert()).then(result => {
-      if (result.code == 2000) {
-        res.json({ message: "用户添加成功", code: "2000" })
-      } else {
-        res.json(result)
-      }
-    })
+  if (!fs.existsSync(path.join(__dirname, `../assets/header`))) {
+    fs.mkdir(path.join(__dirname, `../assets/header`));
   }
+  let param = req.body;
+  let fileUrl = param.header;
+  let oldUrl = param.oldHeader;
+  delete param.oldHeader;
+  db.query(`select count(id) as count from user where name='${param.name}';select count(id) as count from user where phone='${param.phone}';select count(id) as count from user where email='${param.email}';`).then(val => {
+    let type = 0;
+    if (val.data[0][0].count) { type = 1 }
+    else if (val.data[1][0].count) { type = 2 }
+    else if (val.data[2][0].count) { type = 3 }
+    if (type > 0 && !param.id) {
+      res.json({ code: 1003, message: (["", "用户名", "手机号", "邮箱"][type] + "已存在") });
+      return;
+    }
+    let newPath = `user-${param.name}-${new Date().getTime()}${param.header.substring(param.header.lastIndexOf('.'))}`
+    let currPath = path.join(__dirname, `../assets/${fileUrl}`);
+    if (param.id) {
+      let where = { id: param.id };
+      delete param.id;
+      if (fileUrl.includes("temporary")) {
+        param.header = newPath;
+      }
+      db.query(db.sql.table("user").data(param).where(where).update()).then(result => {
+        if (result.code == 2000) {
+          res.json({ message: "用户更新成功", code: "2000" });
+          if (fs.pathExistsSync(currPath) && fileUrl.includes("temporary")) {
+            fs.rename(currPath, path.join(__dirname, `../assets/header/${param.header}`),err=>{
+              fs.remove(path.join(__dirname, `../assets/header/${oldUrl}`));
+            });
+          }
+        } else {
+          res.json(result)
+        }
+      })
+    } else {
+      delete param.id
+      param.header = newPath;
+      param.createTime = new Date().getTime().toString();
+      db.query(db.sql.table('user').data(param).insert()).then(result => {
+        if (result.code == 2000) {
+          res.json({ message: "用户添加成功", code: "2000" });
+          if (fs.pathExistsSync(currPath) && currPath.includes('temporary')) {
+            fs.rename(currPath, path.join(__dirname, `../assets/header/${param.header}`));
+          }
+        } else {
+          res.json(result)
+        }
+      })
+    }
+
+  })
+
 })
 
 router.post('/delete', (req, res) => {
@@ -82,7 +116,7 @@ router.post('/login', (req, res) => {
     res.json({ code: '1003', message: '用户名或密码不为空' });
     return;
   }
-  let sqlData = "SELECT id,name,phone,email,createTime,type,lgCount,lgTime,hearder,city FROM user WHERE 1=1";
+  let sqlData = "SELECT id,name,phone,email,createTime,type,lgCount,lgTime,header,city FROM user WHERE 1=1";
   sqlData += ` and (`;
   sqlData += ` name='${req.body.username}'`;
   sqlData += ` or phone='${req.body.username}'`;

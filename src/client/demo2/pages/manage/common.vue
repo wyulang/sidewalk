@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <el-dialog title="提示" class="module-dialog" :visible.sync="isModel" width="700px">
+    <el-dialog :title="user.id?'用户编辑':'新增用户'" class="module-dialog" :visible.sync="isModel" width="700px">
       <table class="dialog-table ra-4 w-all">
         <tr>
           <td class="w-90 nowrap right">用户名：</td>
@@ -73,7 +73,7 @@
 
           <td rowspan="6" align="center" colspan="2">
             <el-upload class="flex-line" :multiple="true" :data="uploadData" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-              <img v-if="user.header" class="w-170 h-170 avatar" :src="user.header">
+              <img v-if="user.header" class="w-170 h-170 ra-5 avatar" :src="headerUrl+(user.header.includes('temporary')?user.header:'/header/'+user.header)">
               <div v-else class="w-170 avatar-uploader ra-5 h-170 flex ai-c jc-c">
                 <span class="icon fs-22 iconshangchuantupian_f"></span>
               </div>
@@ -147,10 +147,12 @@ export default {
       cityList: city,
       list: [],
       typeList: [{ label: '普通管理员', value: 1 }, { label: '超级管理员', value: 2 }],
-      selectList: [],
+      fileList: [],
+      selectList:[],
       isModel: false,
       uploadUrl: api.env('envUrl') + '/api/base/upload',
       uploadData: {},
+      headerUrl: api.env('envUrl') + '/assets/',
       user: {
         name: "",
         phone: "",
@@ -159,7 +161,8 @@ export default {
         type: 1,
         remark: "",
         city: [],
-        password: ""
+        password: "",
+        header: ""
       },
       serch: {
         value: "",
@@ -176,6 +179,7 @@ export default {
       if (item) {
         item.password = "";
         this.user = item;
+        this.user.oldHeader=item.header;
       } else {
         this.user = {
           name: "",
@@ -218,7 +222,9 @@ export default {
         email: this.user.email,
         sex: this.user.sex,
         type: this.user.type,
-        remark: this.user.remark
+        remark: this.user.remark,
+        header:this.user.header,
+        oldHeader:this.user.oldHeader
       };
       if (this.user.id) {
         sqlData.id = this.user.id;
@@ -226,8 +232,6 @@ export default {
       if (this.user.password) {
         sqlData.password = this.user.password;
       }
-
-
       this.updateUser(sqlData).then(res => {
         this.isModel = false;
         if (res.code == 2000) {
@@ -275,6 +279,12 @@ export default {
     changPage(page) {
       this.serch.page = page;
       this.initData();
+    },
+    handleAvatarSuccess(res, file) {
+      if (res.code == 2000) {
+        this.$set(this.user,"header",res.data.url);
+        this.$set(this.uploadData,"header",res.data.url);
+      }
     }
   },
   created() {

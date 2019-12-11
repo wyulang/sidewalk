@@ -4,7 +4,7 @@ let user = `create table if not exists user(
   city VARCHAR(50) COMMENT '城市ID',
   address VARCHAR(100) COMMENT '地址',
   idCard VARCHAR(18) COMMENT '身份证',
-  hearder VARCHAR(100) COMMENT '头像',
+  header VARCHAR(100) COMMENT '头像',
   createTime VARCHAR(20) COMMENT '创建时间',
   phone VARCHAR(12) COMMENT '手机号',
   password VARCHAR(50) COMMENT '密码',

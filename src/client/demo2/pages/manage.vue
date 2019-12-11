@@ -2,8 +2,8 @@
   <div class='w-all wi-1100 ff h-all'>
     <section class="w-all h-all flex">
       <section class="w-220 bc-bs1 hi-100">
-        <div class="h-45 bc-bs11 flex fc-fff ai-c jc-c">
-          <span class="icon fs-30 mr10 fc-bs6 icongexingtouxiang"></span><span class="fs-14">平安淡然</span>
+        <div class="h-45 bc-bs11 flex fc-fff ai-c jc-s">
+          <span class="icon fs-30 mr10 fc-fff pl20 icongexingtouxiang"></span><span class="fs-14">平安淡然</span>
         </div>
         <div class="mt5">
           <el-menu @select="menuSelect" class="br-0 menu-config">
@@ -30,9 +30,9 @@
       <section class="flex-1 h-all fd-c flex">
         <div class="h-45 bc-bs10 flex ai-c jc-b">
           <span></span>
-          <div class="mr10">
+          <div class="mr10 flex ai-c">
             <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
-
+            <span class="fc-fff fs-16 ml10">{{user.name}}</span>
           </div>
         </div>
         <div class="pp10 bc-bs flex-1 auto">
@@ -50,7 +50,8 @@ import { menu } from "../router.js";
 export default {
   data() {
     return {
-      menunave: []
+      menunave: [],
+      user:this.session("userinfo")
     }
   },
   mounted() {

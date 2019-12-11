@@ -8,10 +8,10 @@ const db = require('../db.js');
 router.post('/table', (req, res) => {
   if (table[req.body.table]) {
     db.query(table[req.body.table]).then(result => {
-      if (result.data.warningCount) {
-        res.json({ code: "2002", message: "表已存在" })
+      if (result.code == 2000) {
+        res.json({ code: "2000", message: "创建表成功" });
       } else {
-        res.json({ code: "2000", message: "创建表成功" })
+        res.json(result);
       }
     })
   } else {
@@ -32,13 +32,26 @@ router.post('/database', (req, res) => {
 })
 
 router.post('/delete-table', (req, res) => {
-  db.query(`SELECT table_name FROM information_schema.TABLES WHERE table_name ='${req.body.table}'`).then(v => {
-    if (v.data.length) {
-      db.query(`DROP TABLE IF EXISTS ${req.body.table}`).then(val => {
-        res.json({ code: 2000, message: '表删除成功' })
-      })
+  db.query(`DROP TABLE IF EXISTS ${req.body.table}`).then(val => {
+    if (val.code == 2000) {
+      res.json({ code: 2000, message: '表删除成功' })
     } else {
-      res.json({ code: 2001, message: '表不存在' })
+      res.json(val)
+    }
+  })
+});
+
+router.post('/delete-file',(req,res)=>{
+  let fileList=req.body.fileList.split(',');
+  fileList.forEach(item => {
+    if(fs.pathExistsSync(path.join(__dirname, `../assets/${item}`))){
+      fs.remove(path.join(__dirname, `../assets/${item}`),err=>{
+        if(err){
+          res.json({code:1002,message:err})
+        }else{
+          res.json({code:2000,message:"文件删除成功"})
+        }
+      });
     }
   });
 })
@@ -47,13 +60,6 @@ router.post('/upload', (req, res) => {
   if (!fs.existsSync(path.join(__dirname, `../assets/temporary`))) {
     fs.mkdir(path.join(__dirname, `../assets/temporary`));
   }
-  if (!fs.existsSync(path.join(__dirname, `../assets/other`))) {
-    fs.mkdir(path.join(__dirname, `../assets/other`));
-  }
-  if (req.body.uploadDir && !fs.existsSync(path.join(__dirname, `../assets/${req.body.uploadDir}/`))) {
-    fs.mkdir(path.join(__dirname, `../assets/${req.body.uploadDir}/`));
-  }
-  // console.log(req);
   setTimeout(() => {
     let formidable = require('formidable');
     let form = new formidable.IncomingForm();
@@ -65,12 +71,10 @@ router.post('/upload', (req, res) => {
       if (err) {
         console.log(err);
       }
-      console.log(form);
-      let title = "H-" + new Date().getTime() + files.file.path.substring(files.file.path.lastIndexOf('.'));
-      req.body.uploadDir = req.body.uploadDir || "other";
-      let toPath = path.join(__dirname, `../assets/${req.body.uploadDir}/`) + title;
+      let title = new Date().getTime() + files.file.path.substring(files.file.path.lastIndexOf('.'));
+      let toPath = path.join(__dirname, `../assets/temporary/`) + title;
       fs.rename(files.file.path, toPath, err => {
-        res.json({ code: "2000", data: { url: +req.body.uploadDir + '/' + title, } })
+        res.json({ code: "2000", data: { url: 'temporary/' + title, } });
       })
     })
   }, 200);

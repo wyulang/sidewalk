@@ -8,10 +8,10 @@ const fs = require('fs-extra');
 // db.query(db.sql.table('nets').select()).then(res=>{
 //   console.log('tag', res);
 // })
-// db.query(`SELECT * FROM user WHERE name='admin'`).then(res=>{
-//   console.log('tag', res);
-// })
-console.log('isfile',fs.existsSync(path.join(__dirname, `./server/assets/`)))
+db.query(`select count(id) as count from user where name='fawefa';select count(id) as count from user where phone='fawefa'`).then(res=>{
+  console.log('tag', res.data[1][0].count);
+})
+// console.log('isfile',fs.existsSync(path.join(__dirname, `./server/assets/`)))
 // db.query(`update user set lgCount=lgCount+ ifnull(x,0) WHERE name='admin'`).then(res=>{
 //   console.log('tag', res);
 // })
@@ -22,9 +22,10 @@ console.log('isfile',fs.existsSync(path.join(__dirname, `./server/assets/`)))
 
 // console.log(db.sql.table('user').data({name:'fwea',email:'faefa'}).where({id:11}).update())
 
-// db.query('DROP TABLE user').then(res=>{
-//   console.log('table', res)
+// db.query('SELECT SQL_CALC_FOUND_ROWS id from user;SELECT FOUND_ROWS() as total;').then(res=>{
+//   console.log('table',   res.data[0],  res.data[1][0].total)
 // })
+// fs.remove("fawefafw")
 // db.query('select * from user').then(res=>{
 //   console.log('table', res)
 // })
