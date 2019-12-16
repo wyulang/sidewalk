@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const db = require('../db.js');
-const { GetDateDiff } = require('../lib/dateformat.js');
+const { GetDateDiff } = require('../lib/dateFormat.js');
 const path = require('path');
 const fs = require('fs-extra');
 
