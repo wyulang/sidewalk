@@ -7,7 +7,7 @@ const fs = require('fs-extra');
 
 router.post('/list', (req, res) => {
   let param = req.body;
-  let sqlData = "SELECT SQL_CALC_FOUND_ROWS id,name,phone,email,createTime,type,lgCount,lgTime,header,city FROM user WHERE 1=1";
+  let sqlData = "SELECT SQL_CALC_FOUND_ROWS id,sex,name,phone,email,createTime,type,lgCount,lgTime,header,city FROM user WHERE 1=1";
   if (param.value) {
     sqlData += ` and concat (name,phone,email) like '%${param.value}%' `;
   }
