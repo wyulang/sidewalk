@@ -65,7 +65,7 @@ const getEntry = () => {
   return isEmpty ? { error: chalk.red.bold(`client no find ${isEmpty} module`) } : entryObj;
 }
 
-console.log("============prosss==============", getEntry())
+// console.log("============prosss==============", getEntry())
 
 module.exports = {
   root: path.resolve(__dirname, '../'),
