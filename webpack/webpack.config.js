@@ -3,10 +3,19 @@ const fs = require('fs-extra');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const chalk = require('chalk');
 
-const [TARGET, clientItem] = [process.env.npm_lifecycle_event, process.argv[2]];
+let [TARGET, clientItem] = [process.env.npm_lifecycle_event, process.argv[2]];
+
+
 const vueLoader = {
   dev: "vue-style-loader",
   build: {
+    loader: MiniCssExtractPlugin.loader,
+    options: {
+      publicPath: '../',
+      hmr: TARGET == 'build', // 仅dev环境启用HMR功能
+    }
+  },
+  pack: {
     loader: MiniCssExtractPlugin.loader,
     options: {
       publicPath: '../',
@@ -39,6 +48,9 @@ const isFile = v => {
 const getEntry = () => {
   let entryObj = {};
   let isEmpty = "";
+  if(TARGET=="pack"){
+    clientItem=process.argv[6];
+  }
   let cur = clientItem && clientItem.toString().replace('/[,，=]/', ',').split(',');
   if (cur) {
     for (let item of cur) {
@@ -52,6 +64,8 @@ const getEntry = () => {
   }
   return isEmpty ? { error: chalk.red.bold(`client no find ${isEmpty} module`) } : entryObj;
 }
+
+console.log("============prosss==============", getEntry())
 
 module.exports = {
   root: path.resolve(__dirname, '../'),
