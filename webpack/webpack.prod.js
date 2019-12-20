@@ -53,7 +53,7 @@ const webpackProdConfig = {
       }
     ),
     new AddAssetHtmlPlugin({
-      filepath: path.resolve(__dirname, './vendor/vue.library.js'),
+      filepath: (path.resolve(__dirname, './vendor/vue.library.js')).replace(/[\\]/g, '/'),
       outputPath:'js',
       publicPath:'./js'
     })

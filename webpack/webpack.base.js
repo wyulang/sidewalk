@@ -129,7 +129,7 @@ let webpackBase = {
 let clearFile = [];
 for (item in config.entry) {
   clearFile.push(`${item}/*`);
-  let templist = path.join(config.root, `./src/client/${item}/index.html`);
+  let templist = path.join(config.root, `.\\src/client\\${item}\\index.html`);
   templist = templist.replace(/[\\]/g, '/');
   htmlConfig = {
     template: templist,
