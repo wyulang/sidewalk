@@ -18,6 +18,6 @@ const getIPAdress = () => {
 }
 let ip=getIPAdress();
 var server = app.listen(6001,ip,res=>{
-  console.log(ip)
+  console.log(`http://${ip}:6001/`)
 });
 

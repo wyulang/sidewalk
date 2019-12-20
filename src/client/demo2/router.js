@@ -31,7 +31,7 @@ const routers = [
       {
         path: '/manage/base',
         name: "manage-base",
-        level: 2,
+        level: 1,
         component: () => import(/* webpackChunkName: "exam" */ './pages/manage/base.vue'),
         meta: {
           index: 0,
@@ -44,12 +44,26 @@ const routers = [
       {
         path: '/manage/common',
         name: "manage-common",
-        level: 1,
-        pre: 1,
+        level: 2,
+        title:"用户管理",
+        pre: 2,
         component: () => import(/* webpackChunkName: "exam" */ './pages/manage/common.vue'),
         meta: {
           index: 0,
-          title: '后台管理员',
+          title: '会员用户',
+          icon: 'iconyonghu',
+          isHeader: 1,
+          isFooter: 1,
+        }
+      },
+      {
+        path: '/manage/admin',
+        name: "manage-admin",
+        pre: 2,
+        component: () => import(/* webpackChunkName: "exam" */ './pages/manage/admin.vue'),
+        meta: {
+          index: 0,
+          title: '后台用户',
           icon: 'iconyonghu',
           isHeader: 1,
           isFooter: 1,

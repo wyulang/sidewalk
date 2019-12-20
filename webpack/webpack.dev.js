@@ -12,6 +12,7 @@ let conlg = [];
 
 for (let item in config.entry) {
   conlg.push(chalk.blueBright.bold('Your application is running here: ') + chalk.greenBright.bold(`http://${config.devServer}:${config.port}/${item}/`));
+  conlg.push(chalk.blueBright.bold('Your application is running here: ') + chalk.greenBright.bold(`http://localhost:${config.port}/${item}/`));
 }
 
 let webpackDevConfig = {

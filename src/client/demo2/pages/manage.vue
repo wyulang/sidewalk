@@ -11,7 +11,7 @@
               <el-submenu class="menu-config-title" v-if="item.children.length" :index="item.name">
                 <div slot="title">
                   <i :class="item.meta.icon" class="icon mr12"></i>
-                  <span class="title" slot="title">{{item.meta.title}}</span>
+                  <span class="title" slot="title">{{item.title}}</span>
                 </div>
                 <el-menu-item-group>
                   <el-menu-item class="menu-config-item" v-for="(child, index) in item.children" :key="index" :index="child.name">

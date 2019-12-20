@@ -11,7 +11,7 @@ let webpackBase = {
       'lib': path.join(config.root, 'lib/'),
       '@css': path.join(config.root, 'src/css'),
       'vue$': 'vue/dist/vue.esm.js',
-      '@component':path.join(config.root, 'src/component')
+      '@component': path.join(config.root, 'src/component')
     },
     modules: ['node_modules', '*'],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.vue']
@@ -130,6 +130,7 @@ let clearFile = [];
 for (item in config.entry) {
   clearFile.push(`${item}/*`);
   let templist = path.join(config.root, `./src/client/${item}/index.html`);
+  templist = templist.replace(/[\\]/g, '/');
   htmlConfig = {
     template: templist,
     inject: true,
