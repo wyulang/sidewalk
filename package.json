@@ -8,8 +8,8 @@
     "build": "node ./webpack/build.js",
     "dll": "webpack --progress --config webpack/webpack.dll.js ---",
     "create": "node ./webpack/webpack.create.js",
-    "server":"nodemon ./server/index.js",
-    "pack":"webpack --progress --config webpack/webpack.prod.js ---"
+    "server": "nodemon ./server/index.js",
+    "pack": "webpack --progress --config webpack/webpack.prod.js ---"
   },
   "author": "",
   "license": "ISC",
@@ -85,7 +85,7 @@
     "nodemon": "^2.0.2",
     "smooth-scrollbar": "^8.5.0",
     "superagent": "^5.1.1",
-    "vue-loading-new": "^1.1.0",
+    "vue-loading-new": "^1.1.2",
     "vue-router": "^3.1.3"
   }
 }

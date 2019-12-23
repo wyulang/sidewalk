@@ -30,8 +30,16 @@
       <section class="flex-1 h-all fd-c flex">
         <div class="h-45 bc-bs10 flex ai-c jc-b">
           <span></span>
-          <div class="mr10 flex ai-c">
-            <el-avatar size="small" icon="el-icon-user-solid"></el-avatar>
+          <div class="mr10 flex ai-c ai-c">
+            <span class="icon fc-fff fs-20 mr5 iconyonghu_fill"></span>
+            <el-dropdown>
+              <span class="fc-fff hand fs-14">
+                下拉菜单<i class="el-icon-arrow-down el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
             <span class="fc-fff fs-16 ml10">{{user.name}}</span>
           </div>
         </div>
@@ -45,14 +53,14 @@
 </template>
 
 <script>
-import Scrollbar from 'smooth-scrollbar';
+import Scrollbar from "smooth-scrollbar";
 import { menu } from "../router.js";
 export default {
   data() {
     return {
       menunave: [],
-      user:this.session("userinfo")
-    }
+      user: this.session("userinfo")
+    };
   },
   mounted() {
     // this.$nextTick(res=>{
@@ -65,17 +73,24 @@ export default {
     }
   },
   created() {
-    let nav = JSON.parse(JSON.stringify(menu.find(v=>{return v.name=='manage'}).children));
+    let nav = JSON.parse(
+      JSON.stringify(
+        menu.find(v => {
+          return v.name == "manage";
+        }).children
+      )
+    );
     nav.forEach(v => {
       if (v.level) {
-        v.children = nav.filter(child => { return child.pre == v.level });
+        v.children = nav.filter(child => {
+          return child.pre == v.level;
+        });
         this.menunave.push(v);
       }
     });
   }
-}
+};
 </script>
 
 <style lang='less'>
-
 </style>

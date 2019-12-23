@@ -8,11 +8,11 @@
           <div class="w-200 ra-5 pp10 bc-ts">
             <div class="flex ai-c bb-f">
               <span class="icon fc-2a6d94 fs-20 iconyonghu"></span>
-              <input v-model="user.username" class="bc-t pp10 w-250 fs-14 fc-2a6d94" AUTOCOMPLETE="off" placeholder="用户名/手机号/邮箱" type="text" />
+              <input v-model="user.username" class="bc-t pp10 w-150 fs-14 fc-2a6d94" autocomplete="new-password" placeholder="用户名/手机号/邮箱" type="text" />
             </div>
             <div class="flex ai-c mt5 mb3 bb-f">
               <span class="icon fc-2a6d94 fs-20 iconpassword"></span>
-              <input v-model="user.password" class="bc-t pp10 w-250 fs-14 fc-2a6d94" AUTOCOMPLETE="off" placeholder="请输入密码" type="password" />
+              <input v-model="user.password" class="bc-t pp10 w-150 fs-14 fc-2a6d94" autocomplete="new-password" placeholder="请输入密码" type="password" />
             </div>
           </div>
           <button @click="goindex" class="buttons w-170 ra-5 fs-16 fc-fff mt20 h-36">登录</button>
@@ -36,7 +36,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getUserLogin"]),
+    ...mapActions(["getAdminLogin"]),
     goindex() {
       if (!this.user.username) {
         this.$message.error("用户名/手机号/邮箱不为空");
@@ -46,7 +46,7 @@ export default {
         this.$message.error("密码需大6个字符");
         return;
       }
-      this.getUserLogin(this.user).then(res => {
+      this.getAdminLogin(this.user).then(res => {
         if (res.code == 2000) {
           this.session('userinfo',res.data)
           this.$router.push({ name: "manage" });

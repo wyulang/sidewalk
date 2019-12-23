@@ -7,7 +7,7 @@ const fs = require('fs-extra');
 
 router.post('/list', (req, res) => {
   let param = req.body;
-  let sqlData = "SELECT SQL_CALC_FOUND_ROWS id,name,phone,email,createTime,type,lgCount,lgTime,city FROM user WHERE 1=1";
+  let sqlData = "SELECT SQL_CALC_FOUND_ROWS id,name,phone,email,createTime,type,lgCount,lgTime,city FROM admin WHERE 1=1";
   if (param.value) {
     sqlData += ` and concat (name,phone,email) like '%${param.value}%' `;
   }
@@ -23,7 +23,7 @@ router.post('/list', (req, res) => {
 
 router.post('/update', (req, res) => {
   let param = req.body;
-  db.query(`select count(id) as count from user where name='${param.name}';select count(id) as count from user where phone='${param.phone}';select count(id) as count from user where email='${param.email}';`).then(val => {
+  db.query(`select count(id) as count from admin where name='${param.name}';select count(id) as count from admin where phone='${param.phone}';select count(id) as count from admin where email='${param.email}';`).then(val => {
     let type = 0;
     if (val.data[0][0].count) { type = 1 }
     else if (val.data[1][0].count) { type = 2 }
@@ -35,7 +35,7 @@ router.post('/update', (req, res) => {
     if (param.id) {
       let where = { id: param.id };
       delete param.id;
-      db.query(db.sql.table("user").data(param).where(where).update()).then(result => {
+      db.query(db.sql.table("admin").data(param).where(where).update()).then(result => {
         if (result.code == 2000) {
           res.json({ message: "用户更新成功", code: "2000" });
         } else {
@@ -45,7 +45,7 @@ router.post('/update', (req, res) => {
     } else {
       delete param.id
       param.createTime = new Date().getTime().toString();
-      db.query(db.sql.table('user').data(param).insert()).then(result => {
+      db.query(db.sql.table('admin').data(param).insert()).then(result => {
         if (result.code == 2000) {
           res.json({ message: "用户添加成功", code: "2000" });
         } else {
@@ -59,7 +59,7 @@ router.post('/update', (req, res) => {
 
 router.post('/delete', (req, res) => {
   let sqlData = ` id in (${req.body.id})`;
-  db.query(db.sql.table('user').where(sqlData).delet()).then(result => {
+  db.query(db.sql.table('admin').where(sqlData).delet()).then(result => {
     if (result.code == 2000) {
       res.json({ message: "删除成功", code: "2000" })
     } else {
@@ -95,7 +95,7 @@ router.post('/login', (req, res) => {
     res.json({ code: '1003', message: '用户名或密码不为空' });
     return;
   }
-  let sqlData = "SELECT id,name,phone,email,createTime,type,lgCount,lgTime,city FROM user WHERE 1=1";
+  let sqlData = "SELECT id,name,phone,email,createTime,type,lgCount,lgTime,city FROM admin WHERE 1=1";
   sqlData += ` and (`;
   sqlData += ` name='${req.body.username}'`;
   sqlData += ` or phone='${req.body.username}'`;
@@ -108,7 +108,7 @@ router.post('/login', (req, res) => {
         let rtData = result.data[0];
         rtData.lgCount = rtData.lgCount && (rtData.lgCount + 1) || 1;
         rtData.lgTime = new Date().getTime();
-        db.query(`update user set lgCount='${rtData.lgCount}',lgTime='${rtData.lgTime}' where id=${rtData.id}`).then(value => {
+        db.query(`update admin set lgCount='${rtData.lgCount}',lgTime='${rtData.lgTime}' where id=${rtData.id}`).then(value => {
           res.json({ message: "登录成功", code: "2000", data: rtData, token: openssr });
         })
       } else {

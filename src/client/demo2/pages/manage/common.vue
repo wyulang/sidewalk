@@ -83,14 +83,14 @@
         <tr>
           <td class="w-90 nowrap right">邮箱：</td>
           <td>
-            <el-input size="small" v-model="user.email" placeholder="输入邮箱"></el-input>
+            <el-input autocomplete="new-password" size="small" v-model="user.email" placeholder="输入邮箱"></el-input>
           </td>
 
         </tr>
         <tr>
           <td class="w-90 nowrap right">密码：</td>
           <td>
-            <el-input size="small" v-model="user.password" placeholder="请输入密码" show-password></el-input>
+            <el-input autocomplete="new-password" size="small" v-model="user.password" placeholder="请输入密码" show-password></el-input>
           </td>
 
         </tr>
@@ -259,7 +259,9 @@ export default {
       })
     },
     initData() {
+      this.spinner.show();
       this.getUserList(this.serch).then(res => {
+        this.spinner.close();
         if (res.code == 2000) {
           this.list = res.data;
           this.serch.total = res.total;

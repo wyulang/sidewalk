@@ -74,14 +74,14 @@
         <tr>
           <td class="w-90 nowrap right">邮箱：</td>
           <td>
-            <el-input size="small" v-model="user.email" placeholder="输入邮箱"></el-input>
+            <el-input autocomplete="new-password" size="small" v-model="user.email" placeholder="输入邮箱"></el-input>
           </td>
 
         </tr>
         <tr>
           <td class="w-90 nowrap right">密码：</td>
           <td>
-            <el-input size="small" v-model="user.password" placeholder="请输入密码" show-password></el-input>
+            <el-input autocomplete="new-password" size="small" v-model="user.password" placeholder="请输入密码" show-password></el-input>
           </td>
 
         </tr>
@@ -158,11 +158,11 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["updateUser", "getUserList", "getUserDelete"]),
+    ...mapActions(["getAdminList", "updateAdmin", "getAdminDelete"]),
     btnAdd(item) {
       if (item) {
         item.password = "";
-        this.user = item;
+        this.user = JSON.parse(JSON.stringify(item));
         this.user.oldHeader=item.header;
       } else {
         this.user = {
@@ -212,7 +212,7 @@ export default {
       if (this.user.password) {
         sqlData.password = this.user.password;
       }
-      this.updateUser(sqlData).then(res => {
+      this.updateAdmin(sqlData).then(res => {
         this.isModel = false;
         if (res.code == 2000) {
           sqlData = null;
@@ -228,7 +228,7 @@ export default {
         this.$message.error("请选择要删除的项")
         return;
       }
-      this.getUserDelete({ id: item }).then(res => {
+      this.getAdminDelete({ id: item }).then(res => {
         if (res.code == 2000) {
           this.selectList = this.selectList.filter(v => { return !item.includes(v) });
           this.$message.success(res.message);
@@ -239,7 +239,9 @@ export default {
       })
     },
     initData() {
-      this.getUserList(this.serch).then(res => {
+      this.spinner.show();
+      this.getAdminList(this.serch).then(res => {
+        this.spinner.close();
         if (res.code == 2000) {
           this.list = res.data;
           this.serch.total = res.total;
