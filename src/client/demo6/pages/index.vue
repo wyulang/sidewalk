@@ -1,7 +1,15 @@
 <template>
-  <div class='w-all fc-success h-all flex ai-c fd-c jc-c'>
-    <!-- <input type="file" accept="image/*" capture="camera"> -->
-    <input type="file" accept="video/*" capture="camcorder">
+  <div class="passwords">
+    <!-- <el-steps :active="stepActive" align-center>
+      <el-step title="验证身份" description="验证身份"></el-step>
+      <el-step title="重置密码" description="重置密码"></el-step>
+      <el-step title="重置密码成功" description="重置密码成功"></el-step>
+    </el-steps> -->
+    <el-steps :active="1">
+      <el-step title="步骤 1" icon="el-icon-edit"></el-step>
+      <el-step title="步骤 2" icon="el-icon-upload"></el-step>
+      <el-step title="步骤 3" icon="el-icon-picture"></el-step>
+    </el-steps>
   </div>
 </template>
 
@@ -9,7 +17,7 @@
 export default {
   data() {
     return {
-      value1: ''
+      stepActive: 1,
     }
   },
   methods: {
@@ -18,4 +26,7 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.passwords {
+  width: 100%;
+}
 </style>

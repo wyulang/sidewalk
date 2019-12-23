@@ -13,6 +13,17 @@ const routers = [
       isHeader: 1,
       isFooter: 1,
     }
+  },
+  {
+    path: '/tow',
+    name: "tow",
+    component: () => import(/* webpackChunkName: "exam" */ './pages/tow.vue'),
+    meta: {
+      index: 0,
+      title: 'index',
+      isHeader: 1,
+      isFooter: 1,
+    }
   }
 ]
 
