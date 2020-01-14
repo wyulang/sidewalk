@@ -9,6 +9,10 @@
       <el-button class="ml20" @click="initData()" type="primary" size="small">查询</el-button>
     </div>
 
+    <div class="w-all bc-fff pt10 pb10 mt10 sha-7 ra-4 pl10 pr10">
+      <div v-pop:foo="user.name">dddd</div>
+    </div>
+
     <div class="w-all bc-fff ra-4 pl10 pr10 pb10 sha-7 mt10">
       <div class="pt10 flex pb10">
         <el-button @click="btnAdd()" icon="icon icontianjia" size="small">新增</el-button>

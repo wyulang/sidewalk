@@ -45,16 +45,24 @@
             <div class="title">{{isPhone==1?"手机号":"邮箱号"}}</div>
             <input v-model="user.phone" :placeholder="isPhone==1?'请输入手机号':'请输入邮箱号'" type="text" />
           </div>
+          <!-- 显示图片验证码条件处理处 -->
+          <div v-if="user.phone.length>10" class="entry-line">
+            <div class="title">图片验证码</div>
+            <input v-model="user.sms_code" placeholder="请输入图片验证码" type="text" />
+            <div class="imgcode">
+              <img v-if="val_code_url" :src="val_code_url" @click="handleChangeValUrl">
+            </div>
+          </div>
           <div class="entry-line">
             <div class="title">验证码</div>
-            <input v-model="user.captcha" placeholder="请输入手机号" type="text" />
+            <input v-model="user.captcha" placeholder="请输入验证码" type="text" />
             <button @click="setCountDown()" :disabled="countDown.disabled">
               <span class="fs-16">{{countDown.title }}</span>
             </button>
           </div>
           <p>
             验证码已发送，
-            <span>{{countDown.disabled?countDown.title:'60'}}</span>秒内输入有效
+            <span style="color:red;">{{countDown.disabled?countDown.title:'60'}}</span>秒内输入有效
           </p>
           <div class="tel">
             <span>短信用不了？您还可以线下联系客服进行申诉</span>
@@ -81,12 +89,11 @@
             <i>您已成功重置密码</i>
           </div>
           <div class="btn-login">
-            <span>立即登录></span>
+            <span @click.stop="btnNext(3)">立即登录></span>
           </div>
         </section>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -95,11 +102,13 @@
 // import * as API_Common from '@/api/common'
 // import { RegExp } from '@/ui-utils'
 // import Storage from '@/utils/storage'
+
 export default {
   data() {
     return {
       step: 1,
       isPhone: 1,
+      val_code_url: "",
       user: {
         password: "",
         sms_code: "",
@@ -114,9 +123,12 @@ export default {
     };
   },
   methods: {
+    /** 改变图片验证码URL */
+    handleChangeValUrl() {
+      this.val_code_url = API_Common.getValidateCodeUrl(this.uuid, 'LOGIN')
+    },
     btnNext(type) {
       this.step = type;
-      console.log(type, '=================')
     },
     setCountDown(val = {}) {
 
@@ -146,6 +158,9 @@ export default {
 
 <style lang='less' scoped>
 .password-modify {
+  * {
+    box-sizing: border-box;
+  }
   width: 1200px;
   margin: 0 auto;
   .password-nav {
@@ -204,7 +219,7 @@ export default {
     display: inline-flex;
     padding-bottom: 15px;
     position: relative;
-    padding:0 20px;
+    padding: 0 20px;
     z-index: 1;
     .step-title {
       display: flex;
@@ -290,7 +305,8 @@ export default {
       margin-top: 30px;
       display: flex;
       align-items: center;
-      padding: 10px;
+      padding-left: 10px;
+      height: 40px;
       border: 1px solid #ddd;
       border-radius: 3px;
       .title {
@@ -304,7 +320,18 @@ export default {
         border: 0;
         span {
           font-size: 12px;
+          margin-left: 100px;
         }
+      }
+      .imgcode {
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+      }
+      img {
+        width: 120px;
+        height: 40px;
+        background-color: #999;
       }
     }
     .btn-login {
